@@ -1,19 +1,22 @@
-/* We added some default styles. Feel free to change them */
-body
-{
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  padding-top: 50px;
+  margin-bottom: 60px;  
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-body > article
-{
-  text-align: center;
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
 }
 
-h1
-{
-  margin: 10px 0;
-}
-
-body {
-  padding-top: 50px;
+.container .text-muted {
+  margin: 20px 0;
 }
