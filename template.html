@@ -22,8 +22,11 @@
         <div class="container">
             <h1>Movie Search!</h1>
             <form action="TODO" method="TODO">
-                <input type="TODO" name="TODO" class="form-control"/>
-                <button type="TODO" class="btn btn-default">Search</button>
+                <div class="form-group">
+                    <label for="searchterm">Enter a search term to filter the movie list</label>
+                    <input name="searchterm" placeholder="Search for a movie" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
             </form>
             <ul>
                 {{{movielist}}}

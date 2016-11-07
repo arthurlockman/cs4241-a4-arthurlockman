@@ -34,7 +34,6 @@ var server = http.createServer (function (req, res) {
     default:
       res.end('404 not found')
   }
-
 })
 
 server.listen(process.env.PORT || port)
