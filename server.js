@@ -54,7 +54,12 @@ function handleSearch(res, uri) {
     if (uri.query && querystring.parse(uri.query)['searchterm']) {
       query = querystring.parse(uri.query)
       searchTerm = query['searchterm']
-      movieList = filterList(searchTerm, movies).map(function(d) { return '<li class="list-group-item">'+d+'</li>' }).join(' ') //TODO: Search
+      searchResult = filterList(searchTerm, movies)
+      if (searchResult.length > 0) {
+        movieList = searchResult.map(function(d) { return '<li class="list-group-item">'+d+'</li>' }).join(' ')
+      } else {
+        movieList = '<div class="alert alert-danger" role="alert">No results found.</div>'
+      }
     } else {
       searchTerm = ""
       movieList = '<div class="alert alert-warning" role="alert">No Search Term Provided!</div>'
