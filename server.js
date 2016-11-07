@@ -5,8 +5,14 @@ var http = require('http')
   , querystring = require('querystring')
   , port = 8080
 
-// Add more movies! (For a technical challenge, use a file, or even an API!)
-var movies = ['Jaws', 'Jaws 2', 'Jaws 3', 'Doctor Strange'] //move to file
+var movies = []
+
+fs.readFile(__dirname + '/movies.txt', 'utf8', function(err, txt) {
+    if (err) {
+      throw err
+    }
+    movies = txt.split('\n')
+})
 
 var server = http.createServer (function (req, res) {
   var uri = url.parse(req.url)
