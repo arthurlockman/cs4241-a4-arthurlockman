@@ -16,19 +16,19 @@
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="navbar-header theme-showcase" role="main">
-                <a class="navbar-brand" href="#">CS 4241 Movie Search</a>
+                <a class="navbar-brand" href="/">CS 4241 Movie Search</a>
             </div>
         </div>
         <div class="container">
             <h1>Movie Search!</h1>
-            <form action="TODO" method="TODO">
+            <form action="search" method="GET">
                 <div class="form-group">
                     <label for="searchterm">Enter a search term to filter the movie list</label>
-                    <input name="searchterm" placeholder="Search for a movie" class="form-control" />
+                    <input name="searchterm" placeholder="Search for a movie" class="form-control" value="{{{searchterm}}}"/>
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
-            <ul>
+            <ul class="list-group">
                 {{{movielist}}}
             </ul>
         </div>
