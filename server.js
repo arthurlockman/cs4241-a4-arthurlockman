@@ -45,6 +45,9 @@ var server = http.createServer (function (req, res) {
     case '/template.html':
       sendFile(res, 'template.html')
       break
+    case '/movies.txt':
+      sendFile(res, 'movies.txt')
+      break
     case '/readme.md':
     case '/README.md':
       sendReadme(res)
