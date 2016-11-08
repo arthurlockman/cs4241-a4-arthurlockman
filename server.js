@@ -1,6 +1,7 @@
 var http = require('http')
   , fs   = require('fs')
   , mustache = require('mustache')
+  , markdown = require( "markdown" ).markdown
   , url  = require('url')
   , querystring = require('querystring')
   , port = 8080
@@ -37,6 +38,10 @@ var server = http.createServer (function (req, res) {
       break
     case '/js/scripts.js':
       sendFile(res, 'scripts.js', 'text/javascript')
+      break
+    case '/readme.md':
+    case '/README.md':
+      sendReadme(res)
       break
     default:
       res.end('404 not found')
@@ -96,7 +101,19 @@ function sendIndex(res) {
     res.writeHead(200, {'Content-type': contentType})
     res.end(rendered, 'utf-8')
   })
+}
 
+function sendReadme(res) {
+  var contentType = 'text/html'
+  fs.readFile(__dirname + '/README.md', 'utf8', function(err, md) {
+    if (err) {
+      throw err
+    }
+    
+    //Serve rendered readme
+    res.writeHead(200, {'Content-type': contentType})
+    res.end(markdown.toHTML(md, 'Gruber'), 'utf-8')
+  })
 }
 
 function filterList(searchterm, list) {
@@ -117,5 +134,4 @@ function sendFile(res, filename, contentType) {
     res.writeHead(200, {'Content-type': contentType})
     res.end(content, 'utf-8')
   })
-
 }
