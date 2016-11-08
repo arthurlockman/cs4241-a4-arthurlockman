@@ -39,6 +39,12 @@ var server = http.createServer (function (req, res) {
     case '/js/scripts.js':
       sendFile(res, 'scripts.js', 'text/javascript')
       break
+    case '/server.js':
+      sendFile(res, 'server.js', 'text/javascript')
+      break
+    case '/template.html':
+      sendFile(res, 'template.html')
+      break
     case '/readme.md':
     case '/README.md':
       sendReadme(res)
