@@ -23,6 +23,9 @@ var server = http.createServer (function (req, res) {
     case '/search':
       handleSearch(res, uri)
       break
+    case '/add':
+      handleAddMovie(res, req, uri)
+      break
     // Note we no longer have an index.html file, but we handle the cases since that's what the browser will request
     case '/':
       sendIndex(res)
@@ -62,7 +65,27 @@ console.log('listening on 8080')
 
 // subroutines
 
-// You'll be modifying this function
+function handleAddMovie(res, req, uri) {
+  if (req.method == 'POST') {
+    var postData = ''
+    req.on('data', function (data) {
+      postData += data
+      console.log('got data')
+    })
+    req.on('end', function () {
+      console.log('end')
+      var post = querystring.parse(postData)
+      console.log(post)
+      //TODO: use post
+    })
+  }
+  
+}
+
+function generateListItem(item) {
+  return '<li class="list-group-item">'+item+'<button type="button" class="btn btn-xs btn-danger btn-delete" value="'+item+'">Delete</buttton></li>'
+}
+
 function handleSearch(res, uri) {
   var contentType = 'text/html'
 
@@ -76,14 +99,14 @@ function handleSearch(res, uri) {
       searchTerm = query['searchterm']
       searchResult = filterList(searchTerm, movies)
       if (searchResult.length > 0) {
-        movieList = searchResult.map(function(d) { return '<li class="list-group-item">'+d+'</li>' }).join(' ')
+        movieList = searchResult.map(function(d) { return generateListItem(d) }).join(' ')
       } else {
         movieList = '<div class="alert alert-danger" role="alert">No results found.</div>'
       }
     } else {
       searchTerm = ""
       movieList = '<div class="alert alert-warning" role="alert">No Search Term Provided!</div>'
-      movieList = movieList + movies.map(function(d) { return '<li class="list-group-item">'+d+'</li>' }).join(' ')
+      movieList = movieList + movies.map(function(d) { return generateListItem(d) }).join(' ')
     }
     
     //Serve rendered page
@@ -102,7 +125,7 @@ function sendIndex(res) {
       throw err
     }
     //Generate movie list
-    movieList = movies.map(function(d) { return '<li class="list-group-item">'+d+'</li>' }).join(' ')
+    movieList = movies.map(function(d) { return generateListItem(d) }).join(' ')
     
     //Serve rendered page
     mustache.parse(html)
