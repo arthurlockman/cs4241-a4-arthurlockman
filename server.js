@@ -5,15 +5,25 @@ var http = require('http')
   , url  = require('url')
   , querystring = require('querystring')
   , port = 8080
+  , aws = require('aws-sdk')
 
 var movies = []
+//Load movies from S3
+s3 = new aws.S3()
 
-fs.readFile(__dirname + '/movies.txt', 'utf8', function(err, txt) {
+function loadFromS3()
+{
+  var params = {Bucket: 'cs4241', Key: 'movies.txt'}
+  s3.getObject(params, function(err, data) {
     if (err) {
-      throw err
+      console.log(err, err.stack)
+    } else {
+      movies = data.Body.toString().split('\n')
     }
-    movies = txt.split('\n')
-})
+  })
+}
+
+loadFromS3()
 
 var server = http.createServer (function (req, res) {
   var uri = url.parse(req.url)
@@ -98,11 +108,7 @@ function addMovie(movieName)
 {
   movies.push(movieName)
   var outString = movies.join('\n')
-  fs.writeFile(__dirname + '/movies.txt', outString, 'utf8', function(err, txt) {
-    if (err) {
-      throw err
-    }
-  })
+  writeMovieListToS3(outString)
 }
 
 function deleteMovie(movieName)
@@ -112,9 +118,21 @@ function deleteMovie(movieName)
     movies.splice(idx, 1)
   }
   var outString = movies.join('\n')
-  fs.writeFile(__dirname + '/movies.txt', outString, 'utf8', function(err, txt) {
+  writeMovieListToS3(outString)
+}
+
+function writeMovieListToS3(movieListTxt)
+{
+  var params = {
+    Bucket: 'cs4241',
+    Key: 'movies.txt',
+    Body: movieListTxt
+  }
+  s3.putObject(params, function (err, data) {
     if (err) {
-      throw err
+      console.log(err, err.stack)
+    } else {
+      console.log("Uploaded to S3 successfully.")
     }
   })
 }

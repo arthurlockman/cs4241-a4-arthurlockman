@@ -1,5 +1,5 @@
 {
-  "name": "cs4241-a3-YOURNAME",
+  "name": "cs4241-a4-arthurlockman",
   "version": "0.0.1",
   "description": "WPI CS 4241 Assignment 3",
   "author": "",
@@ -8,6 +8,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.7.0",
     "markdown": "^0.5.0",
     "mustache": "^2.2.1"
   }
