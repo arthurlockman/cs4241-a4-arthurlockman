@@ -19,14 +19,15 @@ var server = http.createServer (function (req, res) {
   var uri = url.parse(req.url)
 
   switch( uri.pathname ) {
-    // Note the new case handling search
     case '/search':
       handleSearch(res, uri)
       break
     case '/add':
       handleAddMovie(res, req, uri)
       break
-    // Note we no longer have an index.html file, but we handle the cases since that's what the browser will request
+    case '/delete':
+      handleDeleteMovie(res, req, uri)
+      break
     case '/':
       sendIndex(res)
       break
@@ -79,11 +80,42 @@ function handleAddMovie(res, req, uri) {
       //TODO: use post
     })
   }
-  
+}
+
+function handleDeleteMovie(res, req, uri) {
+  if (req.method == 'POST') {
+    var postData = ''
+    req.on('data', function (data) {
+      postData += data
+      console.log('got data')
+    })
+    req.on('end', function () {
+      console.log('end')
+      var post = querystring.parse(postData)
+      console.log(post)
+      deleteMovie(post.movie)
+      sendIndex(res)
+    })
+  }
+}
+
+function deleteMovie(movieName)
+{
+  var idx = movies.indexOf(movieName)
+  if (idx > -1) {
+    movies.splice(idx, 1)
+  }
+  var outString = movies.join('\n')
+  console.log(outString)
+  fs.writeFile(__dirname + '/movies.txt', outString, 'utf8', function(err, txt) {
+    if (err) {
+      throw err
+    }
+  })
 }
 
 function generateListItem(item) {
-  return '<li class="list-group-item">'+item+'<button type="button" class="btn btn-xs btn-danger btn-delete" value="'+item+'">Delete</buttton></li>'
+  return '<li class="list-group-item">'+item+'<button type="submit" class="btn btn-xs btn-danger btn-delete" onClick="deleteButtonClick(this)" value="'+item+'">Delete</buttton></li>'
 }
 
 function handleSearch(res, uri) {
