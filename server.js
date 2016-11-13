@@ -71,13 +71,11 @@ function handleAddMovie(res, req, uri) {
     var postData = ''
     req.on('data', function (data) {
       postData += data
-      console.log('got data')
     })
     req.on('end', function () {
-      console.log('end')
       var post = querystring.parse(postData)
-      console.log(post)
-      //TODO: use post
+      addMovie(post.movie)
+      sendIndex(res)
     })
   }
 }
@@ -87,16 +85,24 @@ function handleDeleteMovie(res, req, uri) {
     var postData = ''
     req.on('data', function (data) {
       postData += data
-      console.log('got data')
     })
     req.on('end', function () {
-      console.log('end')
       var post = querystring.parse(postData)
-      console.log(post)
       deleteMovie(post.movie)
       sendIndex(res)
     })
   }
+}
+
+function addMovie(movieName)
+{
+  movies.push(movieName)
+  var outString = movies.join('\n')
+  fs.writeFile(__dirname + '/movies.txt', outString, 'utf8', function(err, txt) {
+    if (err) {
+      throw err
+    }
+  })
 }
 
 function deleteMovie(movieName)
@@ -106,7 +112,6 @@ function deleteMovie(movieName)
     movies.splice(idx, 1)
   }
   var outString = movies.join('\n')
-  console.log(outString)
   fs.writeFile(__dirname + '/movies.txt', outString, 'utf8', function(err, txt) {
     if (err) {
       throw err
