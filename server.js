@@ -1,7 +1,7 @@
 var http = require('http')
   , fs   = require('fs')
   , mustache = require('mustache')
-  , markdown = require( "markdown" ).markdown
+  , marked = require('marked')
   , url  = require('url')
   , querystring = require('querystring')
   , port = 8080
@@ -199,7 +199,7 @@ function sendReadme(res) {
     
     //Serve rendered readme
     res.writeHead(200, {'Content-type': contentType})
-    res.end(markdown.toHTML(md, 'Gruber'), 'utf-8')
+    res.end(marked(md), 'utf-8')
   })
 }
 
