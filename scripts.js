@@ -11,11 +11,11 @@ function editButtonClick() {
         $('#addMovieForm').hide()
         $('.btn-delete').hide()
         isEditVisible = false
-        $("#editButton").html('Edit');
+        $("#editButton").html('Edit')
     } else {
         $('#addMovieForm').show()
         $('.btn-delete').show()
         isEditVisible = true
-        $("#editButton").html('Cancel');
+        $("#editButton").html('Cancel')
     }
 }
